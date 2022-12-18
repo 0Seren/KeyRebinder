@@ -69,19 +69,6 @@ namespace KeyRebinder.Windows
             }
         }
 
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            base.OnClosing(e);
-
-            if (_forceClose)
-            {
-                return;
-            }
-
-            e.Cancel = true;
-            WindowState = WindowState.Minimized;
-        }
-
         private static Process GetActiveWindowProcess()
         {
             _ = GetWindowThreadProcessId(GetForegroundWindow(), out uint processId);
@@ -271,7 +258,7 @@ namespace KeyRebinder.Windows
         {
             Dispatcher?.Invoke(() =>
             {
-                Grid table = ReboundApplicationsTable;
+                GridControl table = ReboundApplicationsTable;
                 table.RowDefinitions.Clear();
                 table.Children.Clear();
 
@@ -290,6 +277,7 @@ namespace KeyRebinder.Windows
                 Grid.SetRow(applicationNameHeader, 0);
 
                 _ = table.Children.Add(applicationNameHeader);
+
                 string[] apps = _rebinderInfoLookup.Keys.ToArray();
                 for (int i = 0; i < apps.Count(); i++)
                 {
